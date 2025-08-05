@@ -1,27 +1,14 @@
 {
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-        }
-      ]
+  "version": 2,
+  "functions": {
+    "api/analyze/index.js": {
+      "runtime": "@vercel/node@18.x"
     }
-  ],
+  },
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/server.js"
+      "source": "/api/analyze",
+      "destination": "/api/analyze/index.js"
     }
   ]
 }
