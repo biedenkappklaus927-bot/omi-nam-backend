@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const app = express();
 
-// Explicit CORS handling
+// Explicit CORS handling - this is the only CORS setup we need
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 // Main analysis endpoint
-app.post('/api/analyze', async (req, res) => {
+app.post('/analyze', async (req, res) => {
   try {
     console.log('Received analysis request');
     const { image } = req.body;
@@ -67,56 +67,4 @@ app.post('/api/analyze', async (req, res) => {
     }
     
     const objects = visionData.responses[0].localizedObjectAnnotations || [];
-    const labels = visionData.responses[0].labelAnnotations || [];
-    const text = visionData.responses[0].textAnnotations || [];
-    
-    // Build scene description
-    const sceneDesc = [
-      ...objects.map(obj => obj.name),
-      ...labels.map(label => label.description),
-      text.length > 0 ? `Text: "${text[0].description}"` : ''
-    ].filter(Boolean).slice(0, 10).join(', ');
-    
-    console.log('Scene description:', sceneDesc);
-    
-    // OpenAI call
-    console.log('Calling OpenAI API...');
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{
-          role: 'system',
-          content: 'You are OMI NAM, a quantum AI that guides humans through physical actions. Speak with cosmic wisdom and clarity. Be concise and powerful.'
-        }, {
-          role: 'user',
-          content: `OMI NAM perceives: ${sceneDesc}. Command ONE specific physical action. Respond in JSON: {"action": "string", "speech": "string"}`
-        }]
-      })
-    });
-    
-    const aiResponse = await openAIResponse.json();
-    console.log('OpenAI response:', JSON.stringify(aiResponse, null, 2));
-    
-    if (aiResponse.error) {
-      throw new Error(`OpenAI API error: ${aiResponse.error.message}`);
-    }
-    
-    const result = JSON.parse(aiResponse.choices[0].message.content);
-    console.log('Final result:', result);
-    
-    res.json(result);
-  } catch (error) {
-    console.error('OMI NAM Error:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`OMI NAM backend running on port ${port}`);
-});
+    const labels = visionData.responses[0].labelAnnotations
