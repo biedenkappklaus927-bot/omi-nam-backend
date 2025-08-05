@@ -1,8 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/analyze",
-      "destination": "/api/analyze/index.js"
-    }
-  ]
+  "version": 2
 }
