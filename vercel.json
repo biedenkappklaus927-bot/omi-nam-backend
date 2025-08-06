@@ -1,5 +1,7 @@
 {
-  "buildCommand": "npm install",
-  "outputDirectory": null,
-  "framework": null
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
