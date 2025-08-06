@@ -1,7 +1,8 @@
 {
-  "functions": {
-    "server.js": {
-      "runtime": "nodejs18.x"
+  "rewrites": [
+    {
+      "source": "/api/analyze",
+      "destination": "/api/analyze/index.js"
     }
-  }
+  ]
 }
