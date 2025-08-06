@@ -1,13 +1,11 @@
 {
   "name": "omni-nam-backend",
   "version": "1.0.0",
-  "description": "OMI NAM Quantum AI Backend",
-  "main": "server.js",
+  "main": "api/analyze/index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node api/analyze/index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "node-fetch": "^2.6.7"
   }
 }
